@@ -1,0 +1,31 @@
+Character; st00; st01; st02; st03; st04; st05; st06; st07; st08; st09; st10; st11; st12
+100_B. Structural sex of flowers (D2d);bisexual;unisexual
+102_B. Ovary position (binary) (D2d);superior;inferior
+201_A. Perianth presence (D2c);absent;present
+201_B. Number of perianth parts (3-state) (D2c);one to five (1-5);six to ten (6-10);more than ten (>10)
+204_A. Fusion of perianth (D2c);free (<5%);fused (>5%)
+207_A. Symmetry of perianth (binary) (D2d);actinomorphic;zygomorphic
+230_A. Perianth phyllotaxy (binary) (D2d);whorled;spiral
+231_A. Number of perianth whorls (D2c);one (1);two (2);more than two (>2)
+232_A. Perianth merism (4-state) (D2c);dimerous;trimerous;tetramerous;pentamerous
+234_A. Perianth differentiation (binary) (D2d);undifferentiated;differentiated
+301_B. Number of fertile stamens (3-state) (D2c);one to five (1-5);six to ten (6-10);more than ten (>10)
+305_A. Filament (binary) (D2d);laminar (wide);typical (narrow)
+306_A. Fusion of filaments (binary) (D2c);free (<5%);fused (>5%)
+308_A. Fusion of filaments to inner perianth series (binary) (D2c);free (<5%);fused (>5%)
+311_A. Anther orientation (D2d);introrse;latrorse;extrorse
+312_A. Anther attachment (binary) (D2d);basifixed;dorsifixed
+313_A. Anther dehiscence (3-state) (D2d);longitudinal slit;H-valvate;flap-valvate
+314_A. Connective extension (apical) (D2d);absent;present
+330_A. Androecium structural phyllotaxy (binary) (D2d);whorled;spiral
+331_A. Number of androecium structural whorls (3-state) (D2c);one (1);two (2);more than two (>2)
+332_A. Androecium structural merism (4-state) (D2c);dimerous;trimerous;tetramerous;pentamerous
+400_A. Gynoecium phyllotaxy (D2d);whorled;spiral
+401_B. Number of structural carpels (5-state) (D2c);one (1);two (2);three (3);four or five (4-5);more than five (>5)
+403_A. Fusion of ovaries (binary) (D2c);free (<5%);fused (>5%)
+404_B. Style differentiation (D2d);absent;present
+406_A. Fusion of styles (D2c);free (<5%);fused (>5%)
+411_A. Number of ovules per functional carpel (3-state) (D2c);one (1);two (2);three or more (>2)
+412_A. Placentation (D2d);axile;parietal;free-central;laminar
+5000_A. Number of apertures (D2c);inaperturate;monoaperturate;diaperturate;triaperturate;polyaperturate
+5002_A. Aperture shape (D2d);elongate;pore-like;colporate
