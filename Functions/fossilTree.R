@@ -37,7 +37,6 @@ fossilTree <- function(shape="long", tree, fossiltaxon, nrchars, edgescores, col
 		if (shape=="long") {
 			text(x=-65,y=160,labels=title,adj=0,cex=1.2,font=1)
 		} else {
-			# par(oma=c(5,2,5,2),mar=c(0,0,0,0))
 			title(main=title, cex.main=2, outer=TRUE)
 		}
 
@@ -45,19 +44,19 @@ fossilTree <- function(shape="long", tree, fossiltaxon, nrchars, edgescores, col
 		if (shape=="long") {
 			par(new=T)
 			par(oma=c(0,0,0,0),mar=c(12,12,12,370),xpd=TRUE)
+			lblsize <- 1
 		} else {
+		  lblsize <- 1.5
 		}
-		# hist(edgescores, breaks=seq(min(edgescores),max(edgescores)+1,1), labels=TRUE, col=colorgradient, main=NULL, )
 		edgecount <- count(as.factor(edgescores))
 		xnames <- as.character(edgecount$x)
 		xnames[1] <- paste(edgecount$x[1], "\n (MP)", sep="")
 		xnames[2] <- paste(edgecount$x[2], "\n (MP+1)", sep="")
 		if (length(edgecount$x)>2) xnames[3] <- paste(edgecount$x[3], "\n (MP+2)", sep="")
 		mybar <- barplot(edgecount$freq, names.arg=xnames, col=colorgradient, ylim=c(0,1000))
-		# text(mybar, edgecount$freq+20 , paste("n = ",edgecount$freq,sep="") ,cex=1) 
-		text(mybar, edgecount$freq+40, edgecount$freq, cex=2) 
+		text(mybar, edgecount$freq+40, edgecount$freq, cex=lblsize)
 
 	#Close PDF device
-		cat(sep="","\n","Phyloscan plot output to ",filename,"\n\n")
+		cat(sep="","\n","Phyloscan plot output to ",filename)
 		dev.off()
 }

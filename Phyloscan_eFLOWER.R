@@ -1,33 +1,26 @@
-#Phyloscanning for Paleo-eFLOWER (Hervé Sauquet, Apr 2017)
+#Phyloscanning for Paleo-eFLOWER (HervÃ© Sauquet, Apr 2017, last updated Apr 2020)
 
 #Clear buffer of all objects
 	rm(list=ls())
 
 #Load packages
 	library(ape) #framework for handling phylogenetic trees
-	library(corHMM) #used for ML ancestral state reconstruction (rayDISC function)
 	library(phangorn) #used for MP ancestral state reconstruction (ancestral.pars function)
 	library(geiger) #required for function tips
-	library(plotrix) #required for plotting tables
-	# library(xlsx) #required for writing summary results in multi-sheet Excel workbooks
-	library(numbers) #required for calculating Bell numbers
-	library(boa) #required for calculating 95% HPDs
-	library(plyr) #required for calculating state frequencies using the count function
-
+	library(plyr) #required for calculating step frequencies using the count function
+	
 #Load custom functions
 	sapply(list.files(pattern="[.]R$", path="./Functions/", full.names=TRUE), source);
 
-#Read data
-	dsversion <- "V7"
-	series <- "A"
-	suffix <- ""
+#Read data (note this was recycled from the eFLOWER ASR code, this function does more than strictly needed here)
+	series <- "A" #refers to tree series as labelled and presented in Sauquet et al. (2017)
 	treefilename <- paste("eFLOWER_",series,"_MCC_updated.phy",sep="")
 	usrdata <- readData(
 		datafolder="./Data/", 
 		treefile=treefilename, 
 		maptreefile="", 
-		datafile="Paleo-eFLOWER_2020-01-22.csv", 
-		charnamefile="Paleo-eFLOWER_2020-01-22_characters.csv", 
+		datafile="Paleo-eFLOWER_2020-01-22_alt.csv", 
+		charnamefile="Paleo-eFLOWER_2020-01-22_characters.csv", #not actually used at this stage in script below
 		ingroupdef=c("Amborella_trichopoda","Spathiostemon_javensis"), 
 		cladedefsfile="CladeDefinitions_eFLOWER.csv",
 		trimtotree=FALSE
@@ -37,9 +30,7 @@
 	fossiltaxa_index <- grep("X_",usrdata$charmatrix[,1])
 	fossiltaxa <- as.character(usrdata$charmatrix[fossiltaxa_index,1])
 	nrfossils <- length(fossiltaxa)
-	#Report on number of fossil taxa
 	charmatrix <- usrdata$charmatrix
-#	charmatrix <- usrdata$charmatrix[-fossiltaxa,]
 
 #Prepare matrix in the strange format required by phangorn
 	pmatrix <- as.matrix(charmatrix[,-1])
@@ -72,8 +63,8 @@
 
 #Calculate tree length with Fitch (unordered) parsimony using ancestral.pars (phangorn package)
 	tree <- usrdata$treeUP
+	tree$edge.length[tree$edge.length <= 0] <- 1e-05 #quick fix to the issue of negative branch lengths in some MCC trees (allows the code to run properly, but produces suboptimal graphical results)
 	nrsteps <- parsimony(tree, pdata, method="fitch")
-	#Report on default tree length
 
 #Prepare tree stuff for fossil analyses
 	tips <- tree$tip.label #Prepare a vector with the complete list of tips in "tree" ("tips")
@@ -91,29 +82,14 @@
 			singlefossiltree <- read.tree(text=paste("(", fossiltaxon, ":300);")) #note arbitrary branch length
 			#Loop through all edges of the tree and get a parsimony score for each of them
 				edgescores <- vector(mode="integer", length=0)
-				# edgeco <- rep("grey",nredges)
-				# plot(tree, edge.color=edgeco, show.tip.label=FALSE)
 				for (i in 1:nredges)
 					{
 						edgeendnode <- tree$edge[[i,2]] #edge and node numbers have nothing in common, unfortunately, hence the conversion (method borrowed from asrAndmore.R)
 						treewithfossil <- bind.tree(tree, singlefossiltree, where=edgeendnode, position=tree$edge.length[i]/2)
 						edgescores[i] <- parsimony(treewithfossil, pdata, method="fitch")
-						# edgeco[i] <- "blue"
 					}
 				scorespread <- max(edgescores) - min(edgescores) + 1
-				# colorgradient <- c(topo.colors(3), rep("grey", scorespread-3))
-				# colorgradient <- c("red", "yellow", colorRampPalette(c("blue", "cyan"))(scorespread-2))
-				# colorgradient <- c("red", "gold1", colorRampPalette(c("blue", "cyan"))(scorespread-2))
-				# colorgradient <- c("red", "blue", colorRampPalette(c("yellow", "grey"))(scorespread-2))
-				# colorgradient <- c("red", "green", colorRampPalette(c("yellow", "grey"))(scorespread-2))
-				# colorgradient <- c("black", "blue", colorRampPalette(c("yellow", "grey"))(scorespread-2))
 				colorgradient <- c("black", "green", colorRampPalette(c("yellow", "grey"))(scorespread-2))
-				# colorgradient <- c("black", "green", colorRampPalette(c("yellow", "white"))(scorespread-2))
-				# colorgradient <- rainbow(scorespread)
 				fossilTree(shape="long", tree, fossiltaxon, nrchars, edgescores, colorgradient, usrdata$mapclades, usrdata$mapnodesUP, subfolder="", graphpar=c(80,8,20,0.05))
 				fossilTree(shape="fan", tree, fossiltaxon, nrchars, edgescores, colorgradient, usrdata$mapclades, usrdata$mapnodesUP, subfolder="", graphpar=c(80,8,20,0.05))
-				# pie(rep(1, scorespread), col=colorgradient, labels=min(edgescores):max(edgescores))
-				# edgeco <- colorgradient[edgescores-min(edgescores)+1]
-				# plot(tree, edge.color=edgeco, show.tip.label=FALSE)
-				# hist(edgescores, labels=TRUE, col=colorgradient)
 		}
