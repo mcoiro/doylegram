@@ -1,4 +1,4 @@
-#Phyloscanning for Paleo-eFLOWER (Hervé Sauquet, Apr 2017, last updated Apr 2020) modified to apply to any nexus matrix and tree. 
+#Phyloscanning for Paleo-eFLOWER (Hervé Sauquet, Apr 2017, last updated Apr 2020) modified to apply to any nexus matrix and tree (Coiro, last updated June 2024). 
 
 #Clear buffer of all objects
 	rm(list=ls())
